@@ -1,6 +1,4 @@
-a = int(input())
-b = int(input())
-c = int(input())
+a,b,c = int(input()),int(input()),int(input())
 
 mult = a * b * c
 arr = [0,0,0,0,0,0,0,0,0,0]

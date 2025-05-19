@@ -7,7 +7,5 @@ for _ in range(9):
     if max < temp:
         max = temp
         max_index = cnt
-
-    
 print(max)
 print(max_index)
