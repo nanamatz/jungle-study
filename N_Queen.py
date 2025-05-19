@@ -1,52 +1,46 @@
-import numpy as np
-
+import sys
+sys.setrecursionlimit(10**8)        #이거 안해주면 시간 초과남
 n = int(input())
-array = np.array([[1]*n]*n)
-cnt = 0
+row = [-1]*n
+d_list_1 = [-1]*(2*n-1) 
+d_list_2 = [-1]*(2*n-1)
+result = 0
 
-def get_possible_index(level):
-    for i in range(n):
-        if array[level][i] == 1: #1일 경우
-            return i
-    return -1
+def set(x,array,d1,d2,result):
 
-def block_lines(x,y):
-        for i in range(1,n):    #세로 블락
-            array[i][y] = 0
+    if x == n:      #마지막 행이 n-1까지 이므로 n번째 자식 함수에서 탈출한다. 그러면서 n개를 잘 놨으니까 +1
+        result += 1
+        return result,True
 
-        end = n - max(x,y)      #Index 바운더리를 최댓값에 따라 대각선 블락 횟수를 기준으로 잡는다. 
+    for y in range(len(array)):
+        if array[y] == -1:      #열 체크
 
-        for i in range(end):    #메인 대각선 (우하단) 블락                   
-            array[x+i][y+i] = 0
+            if d1[x-y+n-1] == -1:    #메인 대각선 체크(우하향)
 
-        end = min(n-x-1,y) + 1  #Index 바운더리를 최소값에 따라 대각선 블락 횟수를 기준으로 잡는다.
+                if d2[x+y] == -1:    #서브 대각선 체크(좌하향)
+                    array[y] = y     #행과 대각선이 체크가 되면 put해준다.
+                    d1[x-y+n-1] = 1 
+                    d2[x+y] = 1
 
-        for i in range(end):      #서브 대각선 (좌하단) 블락
-            array[x+i][y-i] = 0
-             
-        print(array)
+                    result,flag = set(x+1,array,d1,d2,result)   #자식들아 가라
 
+                    if flag:
+                        array[y] = -1     #자식 함수에서 적신호를 받으면 해당 함수에서 작업했던 것을 되돌린다.
+                        d1[x-y+n-1] = -1  
+                        d2[x+y] = -1
+                        if y == n-1:    #열의 끝에 도달하면 상위 함수로 돌아간다.
+                            return result,True
+                else:
+                    continue
+            else:
+                if y == n-1:    
+                    return result,True
+                continue
+        else:
+            if y == n-1:    
+                return result,True
+    return  result,False
 
-
-def n_queen_put(level):
-    if level == n:  # n개의 퀸을 다 놓았다면 리턴
-        cnt += 1
-        return
-    i = get_possible_index(level)
-    
-    if i == -1: # 놓을 곳이 없을 때 리턴
-        return
-    
-    array[level][i] = 0 #n행 i열에 퀸 놓기
-    
-    block_lines(level,i) #N행 i열을 기준으로 대각,직선 블락 처리
-    
-    level += 1 #일단 매개변수에 바로 안 넣고 변수에 따로 값 저장
-    
-    n_queen_put(level)
-        
-
-n_queen_put(n-n)
-print(cnt)
-        
-    
+result,flag = set(n-n,row,d_list_1,d_list_2,result)
+print(result)
+                
