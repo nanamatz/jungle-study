@@ -13,5 +13,4 @@ for i in range(len(arr)):
     if flag: #한 번도 나누어 떨어지지 않았으면 소수이므로 +1
         count += 1
     
-
 print(count)
