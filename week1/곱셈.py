@@ -1,17 +1,26 @@
-import sys
-a = int(sys.stdin.readline())
+a,b,c = map(int,input().split())
 
+def merge(b):
+        return (a ** b)        
+def partition(b):
+    if b >= 1:
+        if b % 2 == 0:
+            partition(b//2)
+            return ((merge(b//2)**2) % c)
+        else:
+            partition(b//2)
+            return ((merge(b//2)**2)*a % c)
 
-b = sys.stdin.readline()
+def zegop(a,b):
+    if b == 0:
+         return 1
+    result = (zegop(a,b//2)**2)%c
+    if b % 2 == 1:
+        result = result*a
+    return result
+result = zegop(a,b)%c
 
-
-for i in reversed(range(3)):
-    print(a*int(b[i]))
-
-d_hun = int(b[0]) * 100
-d_ten = int(b[1]) * 10
-d_one = int(b[2])
-
-b = d_hun + d_ten + d_one
-print(a*b)
-
+if result == None:
+    print(a % c)
+else:
+    print(result)
