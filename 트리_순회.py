@@ -1,53 +1,38 @@
 n = int(input())
 
-class TreeNode():
-    def __init__(self,value):
-        self.left = None
-        self.right = None
-        self.item = value
-
 class BinaryTree():
-    def __init__(self):
-        self.root = None
+    def __init__(self,root):
+        self.root = root
 
-def PreOrder(root):
-    if root.item == None:
+dic = {}
+
+for i in range(n):
+    key,left,right = input().split()
+    dic[key] = (left,right)
+
+def PreOrder(key):
+    if key == '.':
         return
-    print(root.item,end='')
-    PreOrder(root.left)
-    PreOrder(root.right)
+    print(key,end='')
+    PreOrder(dic[key][0])
+    PreOrder(dic[key][1])
 
-def InOrder(root):
-    if root.item == None:
+def InOrder(key):
+    if key == '.':
         return
-    InOrder(root.left)
-    print(root.item,end='')
-    InOrder(root.right)
+    InOrder(dic[key][0])
+    print(key,end='')
+    InOrder(dic[key][1])
 
-def PostOrder(root):
-    if root.item == None:
+def PostOrder(key):
+    if key == '.':
         return
-    PostOrder(root.left)
-    PostOrder(root.right)
-    print(root.item,end='')
-
-def make_tree(root,item,left,right):
-    if root.item == item:
-        root.left = left
-        root.right = right
-        return
-    make_tree(root.left,item,left,right)
-    make_tree(root.right,item,left,right)
-
-ele,lchild,rchild = map(str,input().split())
-
-tree = BinaryTree()
-tree.root = TreeNode(ele)
-
-for _ in range(n-1):
-    parent,left,right = map(str,input().split())
-    make_tree(tree.root,parent,left,right)
-
-PreOrder(tree.root)
-InOrder(tree.root)
-PostOrder(tree.root)
+    PostOrder(dic[key][0])
+    PostOrder(dic[key][1])
+    print(key,end='')
+root = next(iter(dic))
+PreOrder(root)
+print()
+InOrder(root)
+print()
+PostOrder(root)
