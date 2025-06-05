@@ -30,6 +30,7 @@ def PostOrder(key):
     PostOrder(dic[key][0])
     PostOrder(dic[key][1])
     print(key,end='')
+    
 root = next(iter(dic))
 PreOrder(root)
 print()
